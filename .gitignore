@@ -1,2 +1,5 @@
 # tmp directory used to hold binaries
 tmp/
+
+# ansible ignore
+*.retry
