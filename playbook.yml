@@ -5,9 +5,22 @@
     - name: install base packages
       package:
         name:
-          - git
+          - curl
+          - net-tools
+          - openssh-server
           - vim
+          - git
       become: yes
+    - name: copy sshd_config
+      copy:
+        dest: /etc/ssh/sshd_config
+        src: files/sshd_config
+        owner: root
+        group: root
+        mode: 644
+      become: yes
+      notify:
+        - Restart OpenSSH
     - name: create directory needed for binaries
       file:
         path: ./tmp
@@ -28,3 +41,8 @@
       apt:
         deb: ./tmp/vagrant_2.2.2_x86_64.deb
       become: yes
+
+  handlers:
+    - name: Restart OpenSSH
+      service: name=ssh state=restarted
+
