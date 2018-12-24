@@ -17,10 +17,17 @@
         src: files/sshd_config
         owner: root
         group: root
-        mode: 644
+        mode: 0644
       become: yes
       notify:
         - Restart OpenSSH
+    - name: create authorized_keys file
+      file:
+        path: ~/.ssh/authorized_keys
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0644
+        state: touch
     - name: create directory needed for binaries
       file:
         path: ./tmp
